@@ -1,5 +1,6 @@
 'use client';
 
+import stateData from '@/assets/state_data.json';
 import Map from '@/components/maps/map';
 import classes from '@/utils/classnames';
 import StateCard from '@/components/stateCards/stateCard';

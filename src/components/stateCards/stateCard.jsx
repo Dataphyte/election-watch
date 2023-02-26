@@ -1,5 +1,5 @@
 import React from 'react';
-import stateData from '../../assets/state_data.json';
+import stateData from '@/assets/state_data.json';
 
 const StateCard = () => {
   const states = stateReducer(stateData);
@@ -8,7 +8,10 @@ const StateCard = () => {
     <div className='text-black w-full min-h-full flex  items-center gap-5 justify-evenly '>
       {states &&
         states.map((data, idx) => (
-          <div className='w-[50%] h-[250px] border-red-500 border rounded-md ' key={idx}></div>
+          <div
+            className='w-[50%] h-[250px] border-red-500 border rounded-md '
+            key={idx}
+          ></div>
         ))}
     </div>
   );
