@@ -1,5 +1,5 @@
 import React from 'react';
-import geoData from '@/assets/nigeria_geojson.geojson';
+import geoData from '@/assets/LGA.geojson';
 import {
   ComposableMap,
   Geography,
