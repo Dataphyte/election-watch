@@ -27,6 +27,7 @@ const Map = () => {
                   width: '100%',
                   height: '800px',
                   fill: '#EEE',
+                  overflow: 'hidden',
                   stroke: '#444',
                 },
                 hover: {

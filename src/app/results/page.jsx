@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const Results = () => {
   const puData = {
@@ -46,12 +47,24 @@ const Results = () => {
         </ul>
       </div>
 
-      <section>
+      <section className='w-full grid grid-cols-2'>
         {/* -- original IRev*/}
-        <div className='w-1/2 flex'></div>
+        <div className='w-1/2 flex col-span-2 md:col-span-1 relative'>
+          <Image
+            src='https://images.unsplash.com/photo-1599498448014-81d90414c50a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'
+            alt='Irev upload'
+            fill
+          />
+        </div>
 
         {/* -- community upload*/}
-        <div className='w-1/2 flex'></div>
+        <div className='w-1/2 flex col-span-2 md:col-span-1 relative'>
+          <Image
+            src='https://images.unsplash.com/photo-1599498448014-81d90414c50a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'
+            alt='Irev upload'
+            fill
+          />
+        </div>
       </section>
 
       {/* -- View options */}
