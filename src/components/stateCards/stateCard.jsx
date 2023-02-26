@@ -23,7 +23,6 @@ const stateReducer = (args) => {
   while (result.length < 3) {
     const current = args[Math.floor(Math.random() * 36) + 1];
     !result.includes(current) && result.push(current);
-    counter++;
   }
 
   return result;
