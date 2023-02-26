@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import StateFilter from '@/components/state-filter';
 
 const Results = () => {
   const puData = {
@@ -47,7 +48,10 @@ const Results = () => {
         </ul>
       </div>
 
-      <section className='w-full grid grid-cols-2'>
+      {/* -- state data */}
+      <StateFilter />
+
+      <section className='w-full h-[800px] grid grid-cols-2'>
         {/* -- original IRev*/}
         <div className='w-1/2 flex col-span-2 md:col-span-1 relative'>
           <Image
