@@ -5,6 +5,8 @@ import { stateStore } from '@/global/stateStore';
 import StateData from '@/assets/state_data.json';
 
 const StateFilter = () => {
+  //  TODO: MAke the select option default show again
+
   const { selectedState, setSelectedState } = stateStore();
   return (
     <>
@@ -15,12 +17,10 @@ const StateFilter = () => {
         <p>Filter your results</p>
         {/* -- select state */}
         <select
+          defaultValue={'Select by State'}
           onChange={(e) => setSelectedState(e.target.value)}
           className='border border-gray-400 py-1 px-3 rounded'
         >
-          <option selected disabled hidden value=''>
-            Select by state
-          </option>
           {StateData.map((data, idx) => (
             <option key={idx} value={data.name}>
               {data.name}
@@ -30,12 +30,13 @@ const StateFilter = () => {
 
         {/* -- select lga */}
         <select
+          defaultValue={'Selected a state to see LGA'}
           className='border border-gray-400 py-1 px-3 rounded'
           onChange={(e) =>
             console.log({ state: selectedState, lga: e.target.value })
           }
         >
-          <option selected hidden value='' disabled>
+          <option hidden value='' disabled>
             Selected a state to see LGA
           </option>
           {selectedState &&
