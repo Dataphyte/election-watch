@@ -18,4 +18,12 @@ body {
   .nav-links {
     @apply cursor-pointer transition-all duration-300 font-medium text-sm hover:text-blue-600;
   }
+
+  .form-container {
+    @apply sm:col-span-3 col-span-4 md:col-span-2;
+  }
+
+  .form-inputs {
+    @apply h-9 w-full border rounded shadow-md outline-none px-3;
+  }
 }
