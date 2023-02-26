@@ -5,10 +5,10 @@ const StateCard = () => {
   const states = stateReducer(stateData);
   console.log(states);
   return (
-    <div className='text-black w-full min-h-full flex items-center gap-5 justify-evenly '>
-      {stateData &&
-        stateData.map((data, idx) => (
-          <div className='w-full h-8 border border-black' key={idx}></div>
+    <div className='text-black w-full min-h-full flex  items-center gap-5 justify-evenly '>
+      {states &&
+        states.map((data, idx) => (
+          <div className='w-[50%] h-[250px] border-red-500 border rounded-md ' key={idx}></div>
         ))}
     </div>
   );
