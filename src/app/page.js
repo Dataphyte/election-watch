@@ -1,91 +1,104 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
+'use client';
+import { useState, useEffect } from 'react';
+import StateData from '@/assets/state_data.json';
+import Map from '@/components/maps/map';
+import classes from '@/utils/classnames';
 
 export default function Home() {
+  const [selectedState, setSelectedState] = useState(null);
+
+  // TODO: change this to vote data from API or other data source
+  const votesData = [
+    { name: 'APC', votes: 23456, color: 'text-green-600', bg: 'bg-green-600' },
+    {
+      name: 'LP',
+      votes: 23453456,
+      color: 'text-indigo-600',
+      bg: 'bg-indigo-600',
+    },
+    { name: 'PDP', votes: 2345678, color: 'text-rose-600', bg: 'bg-rose-600' },
+  ];
+
+  useEffect(() => {
+    console.log(selectedState);
+    console.log(StateData.filter((data) => data.name === selectedState));
+  }, [selectedState]);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+    <main className='flex flex-col items-center w-full h-screen px-10 pt-6 gap-4'>
+      <h1 className='font-bold text-4xl text-blue-500'>
+        2023 Election Results
+      </h1>
+
+      {/* -- Top parties section */}
+      <div className='w-full items-center justify-center flex gap-8 font-medium text-gray-700'>
+        {votesData.map((data, idx) => (
+          <div className='flex flex-col py-1 px-3 w-44 h-12 bg-white rounded-md shadow relative'>
+            <div
+              className={classes('w-1 h-full absolute left-0 top-0', data.bg)}
             />
-          </a>
-        </div>
+            <p className={classes('font-black text-sm', data.color)}>
+              {data.name}
+            </p>
+            <p className='text-xs'>
+              current votes - <b>{data.votes}</b>
+            </p>
+          </div>
+        ))}
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+      {/* -- ############################ */}
+      {/* -- select filter */}
+      {/* -- ############################ */}
+      <section className='flex gap-4 items-center text-sm'>
+        <p>Filter your results</p>
+        {/* -- select state */}
+        <select
+          onChange={(e) => setSelectedState(e.target.value)}
+          className='border border-gray-400 py-1 px-3 rounded'
         >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          <option selected disabled hidden value=''>
+            Select by state
+          </option>
+          {StateData.map((data, idx) => (
+            <option key={idx} value={data.name}>
+              {data.name}
+            </option>
+          ))}
+        </select>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+        {/* -- select lga */}
+        <select
+          className='border border-gray-400 py-1 px-3 rounded'
+          onChange={(e) =>
+            console.log({ state: selectedState, lga: e.target.value })
+          }
         >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
+          <option selected hidden value='' disabled>
+            Selected a state to see LGA
+          </option>
+          {selectedState &&
+            StateData.filter((data) => data.name === selectedState)[0].lgas.map(
+              (data, idx) => (
+                <option value={data} key={idx}>
+                  {data}
+                </option>
+              )
+            )}
+        </select>
+      </section>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      {/* -- ############################ */}
+      {/* -- data cards*/}
+      {/* -- ############################ */}
+      <section className='w-full bg-white rounded shadow-md min-h-[300px]'></section>
+
+      {/* -- ############################ */}
+      {/* -- Maps*/}
+      {/* -- ############################ */}
+      <div className='w-full h-[80vh] min-h-[800px] flex items-center justy-center overflow-hidden'>
+        <Map />
       </div>
     </main>
-  )
+  );
 }
