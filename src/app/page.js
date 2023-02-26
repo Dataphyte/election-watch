@@ -48,8 +48,8 @@ export default function Home() {
       {/* -- ############################ */}
       {/* -- data cards*/}
       {/* -- ############################ */}
-      <section className='w-full bg-white rounded shadow-md min-h-[300px] px-4 py-3 flex'>
-        {/* <StateCard /> */}
+      <section className='w-full min-h-[300px] px-4 py-3 flex'>
+        <StateCard />
       </section>
 
       {/* -- ############################ */}

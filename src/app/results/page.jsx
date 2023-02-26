@@ -53,7 +53,7 @@ const Results = () => {
 
       <section className='w-full h-[800px] grid grid-cols-2'>
         {/* -- original IRev*/}
-        <div className='w-1/2 flex col-span-2 md:col-span-1 relative'>
+        <div className='w-1/2 flex col-span-2 md:col-span-1 relative bg-green-500'>
           <Image
             src='https://images.unsplash.com/photo-1599498448014-81d90414c50a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'
             alt='Irev upload'
