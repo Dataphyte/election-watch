@@ -3,12 +3,13 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    domains: ['images.unsplash.com'],
+  },
 };
 
 module.exports = {
-  experimental: {
-    appDir: true,
-  },
+  ...nextConfig,
 
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.module.rules.push({
