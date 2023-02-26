@@ -14,8 +14,16 @@ body {
   overflow-x: hidden;
 }
 
+
+
 @layer components {
   .nav-links {
     @apply cursor-pointer transition-all duration-300 font-medium text-sm hover:text-blue-600;
   }
+
+  /* .progress-bar {
+    @apply 
+  } */
 }
+
+

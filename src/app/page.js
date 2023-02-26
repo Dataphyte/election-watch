@@ -9,14 +9,20 @@ import StateFilter from '@/components/state-filter';
 export default function Home() {
   // TODO: change this to vote data from API or other data source
   const votesData = [
-    { name: 'APC', votes: 23456, color: 'text-green-600', bg: 'bg-green-600' },
+    { name: 'APC', 
+    votes: 23456,
+     color: 'text-green-600', 
+     bg: 'bg-green-600' },
     {
       name: 'LP',
       votes: 23453456,
       color: 'text-indigo-600',
       bg: 'bg-indigo-600',
     },
-    { name: 'PDP', votes: 2345678, color: 'text-rose-600', bg: 'bg-rose-600' },
+    { name: 'PDP', 
+    votes: 2345678, 
+    color: 'text-rose-600', 
+    bg: 'bg-rose-600' },
   ];
 
   return (
