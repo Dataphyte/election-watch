@@ -10,16 +10,22 @@ const StateCard = () => {
       party: 'LP',
       percentage: 48,
       votes: 23456,
+      progressText: 'text-indigo-600',
+      progressBg: 'bg-indigo-600'
     },
     {
       party: 'PDP',
       percentage: 25,
       votes: 23456,
+      progressText: 'text-rose-600',
+      progressBg: 'bg-rose-600'
     },
     {
       party: 'APC',
       percentage: 15,
       votes: 23456,
+      progressText: 'text-green-600',
+      progressBg: 'bg-green-600'
     },
     // More people...
   ];
@@ -69,10 +75,12 @@ const StateCard = () => {
                               {person.party}
                             </td>
                             <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                              <p>
-                                {person.percentage}%&nbsp;&nbsp;
-                                <progress value={person.percentage} max={100} />
-                              </p>
+                              <div className='flex items-center'>
+                                <p className={person.progressText}>{person.percentage}%&nbsp;&nbsp;</p>
+                               <div  className="flex w-full h-3 bg-gray-400">
+                                  <div max={100} className={person.progressBg}  style={{ width: `${person.percentage}%`}} />
+                               </div>
+                              </div>
                             </td>
                             <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                               {person.votes}
