@@ -1,15 +1,24 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import HelpModal from './modals/help';
 
 const Nav = () => {
-  return (
-    <nav className='w-full h-16 bg-white px-16 py-2 flex items-center justify-between shadow-sm border-b'>
-      <p className='text-xl font-bold text-blue-500'>ELECTION RESULT WATCH</p>
+  const [OpenHelp, setOpenHelp] = useState(false);
 
-      {/* <ul className='flex gap-4 text-sm items-center'>
-        <li className='nav-links'>Home</li>
-        <li className='nav-links'>Maps</li>
-        <li className='nav-links'>Results</li>
-      </ul> */}
+  return (
+    <nav className='w-full h-16 bg-white px-2 md:px-16 py-2 flex items-center justify-between shadow-sm border-b'>
+      <HelpModal state={OpenHelp} setState={setOpenHelp} />
+      <p className='text-lg font-bold text-blue-500'>ELECTION RESULT WATCH</p>
+
+      <p
+        className='cursor-pointer text-white rounded shadow bg-blue-500 font-bold flex items-center w-max gap-1 py-1 px-3 justify-center'
+        onClick={() => setOpenHelp(true)}
+      >
+        <InformationCircleIcon className='w-5' />
+        Help
+      </p>
     </nav>
   );
 };

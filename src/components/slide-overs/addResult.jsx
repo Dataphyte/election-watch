@@ -26,9 +26,9 @@ export default function AddResult({ state, setState, type }) {
     setFormData({ ...FormData, [target]: payload });
   };
 
-  useEffect(() => {
-    console.log(FormData);
-  }, [FormData]);
+  // useEffect(() => {
+  //   console.log(FormData);
+  // }, [FormData]);
 
   // -- handlefile upload  -->
   const handleFileUpload = (e) => {

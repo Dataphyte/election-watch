@@ -25,10 +25,10 @@ const Results = () => {
     });
   }, [selectedLga, selectedState]);
 
-  useEffect(() => {
-    console.log(InHouseImage);
-    console.log(CommunityImage);
-  }, [InHouseImage, CommunityImage]);
+  // useEffect(() => {
+  //   console.log(InHouseImage);
+  //   console.log(CommunityImage);
+  // }, [InHouseImage, CommunityImage]);
 
   // TODO: Fetch image
   /**
@@ -111,7 +111,7 @@ const Results = () => {
           {/* -- state name */}
           <div className='col-span-4 md:col-span-2 flex'>
             <p>
-              State: <b>{selectedState}</b>
+              State: <b>{selectedState || 'select state'}</b>
             </p>
           </div>
 
@@ -132,7 +132,7 @@ const Results = () => {
           {/* -- lga name */}
           <div className='col-span-4 md:col-span-2 flex'>
             <p>
-              Local Government Area: <b>{selectedLga}</b>
+              Local Government Area: <b>{selectedLga || 'Select LGA'}</b>
             </p>
           </div>
 
