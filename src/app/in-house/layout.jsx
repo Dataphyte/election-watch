@@ -12,7 +12,7 @@ const InHouseLayout = ({ children }) => {
   //     navigator.push('in-house');
   //   }
 
-  //   -- managhe user access -->
+  //   -- manage user access -->
   useEffect(() => {
     if (!superUser || superUser === null || !superUser.user) {
       navigator.push('in-house');

@@ -1,12 +1,14 @@
 'use client';
 
-import stateData from '@/assets/state_data.json';
+import { useEffect } from 'react';
 import Map from '@/components/maps/map';
 import classes from '@/utils/classnames';
+import { useRouter } from 'next/navigation';
 import StateCard from '@/components/stateCards/stateCard';
 import StateFilter from '@/components/state-filter';
 
 export default function Home() {
+  const navigator = useRouter();
   // TODO: change this to vote data from API or other data source
   const votesData = [
     {
@@ -28,6 +30,11 @@ export default function Home() {
       bg: 'bg-rose-600',
     },
   ];
+
+  // TODO: comment this code out in development
+  useEffect(() => {
+    navigator.replace('results');
+  });
 
   return (
     <main className='flex flex-col items-center w-full h-screen px-10 pt-6 gap-4'>
