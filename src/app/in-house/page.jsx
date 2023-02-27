@@ -3,7 +3,7 @@
 import { auth } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { superUserStore } from '@/global/superUserSTore';
+import { superUserStore } from '@/global/superUserStore';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const InHouse = () => {

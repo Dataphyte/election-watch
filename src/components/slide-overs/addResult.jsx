@@ -6,7 +6,7 @@ import { ref, uploadBytes } from 'firebase/storage';
 import { useUploadStore } from '@/global/uploadStore';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { superUserStore } from '@/global/superUserSTore';
+import { superUserStore } from '@/global/superUserStore';
 import { Fragment, useRef, useState, useEffect } from 'react';
 
 export default function AddResult({ state, setState, type }) {
