@@ -8,7 +8,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Fragment, useRef, useState, useEffect } from 'react';
 
-export default function AddResult({ state, setState }) {
+export default function AddResult({ state, setState, type }) {
   const imageRef = useRef();
   const [SelectedFile, setSelectedFile] = useState(null);
   const [FormData, setFormData] = useState({ state_name: 'Abuja' });
@@ -39,7 +39,7 @@ export default function AddResult({ state, setState }) {
     ) {
       const storageRef = ref(
         storage,
-        `community/${FormData.state_name}-${FormData.state_code}/${FormData.lga_name}-${FormData.lga_code}/${FormData.polling_unit_name}-${FormData.polling_unit_code}/${SelectedFile.name}`
+        `${type}/${FormData.state_name}-${FormData.state_code}/${FormData.lga_name}-${FormData.lga_code}/${FormData.polling_unit_name}-${FormData.polling_unit_code}/${SelectedFile.name}`
       );
 
       uploadBytes(storageRef, SelectedFile).then((snapshot) => {
@@ -100,10 +100,12 @@ export default function AddResult({ state, setState }) {
                     <div className='relative mt-6 flex-1 px-4 sm:px-6'>
                       {/* Replace with your content */}
                       <form className='w-full h-auto py-1 grid grid-cols-4 gap-2'>
-                        <p className='text-rose-500 font-sm font-bold col-span-4 mb-6 border px-2 py-1 border-rose-500/40 rounded-md'>
-                          Note: If your image details are the same with INEC
-                          data please do not upload.
-                        </p>
+                        {type === 'community' && (
+                          <p className='text-rose-500 font-sm font-bold col-span-4 mb-6 border px-2 py-1 border-rose-500/40 rounded-md'>
+                            Note: If your image details are the same with INEC
+                            data please do not upload.
+                          </p>
+                        )}
                         {/* -- state name */}
                         <div className='form-container'>
                           <label

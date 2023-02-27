@@ -13,7 +13,7 @@ const StateFilter = () => {
       {/* -- ############################ */}
       {/* -- select filter */}
       {/* -- ############################ */}
-      <section className='flex gap-4 items-center text-sm'>
+      <section className='flex flex-col md:flex-row gap-4 items-center text-sm'>
         <p>Filter your results</p>
         {/* -- select state */}
         <select

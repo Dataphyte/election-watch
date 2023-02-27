@@ -54,12 +54,14 @@ const Results = () => {
     ) {
       listAll(communityRef).then((listData) => {
         console.log(listData);
-        getDownloadURL(ref(storage, listData.items[0].fullPath)).then((url) =>
-          setCommunityImage(url)
-        );
+        getDownloadURL(ref(storage, listData.items[0].fullPath))
+          .then((url) => setCommunityImage(url))
+          .catch((error) => console.log(error));
       });
 
-      // getDownloadURL(internalRef).then((url) => setInHouseImage(url));
+      getDownloadURL(internalRef)
+        .then((url) => setInHouseImage(url))
+        .catch((error) => console.log(error));
     } else {
       alert('Please fill the fields correctly to See reults!!');
     }
@@ -72,7 +74,9 @@ const Results = () => {
 
   return (
     <div className='flex flex-col py-5 w-full gap-5 min-h-screen items-center'>
-      <AddResult state={ShowForm} setState={setShowForm} />
+      {/* -- add result slide over */}
+      <AddResult state={ShowForm} setState={setShowForm} type='community' />
+
       <h1 className='text-2xl md:text-3xl font-bold text-blue-500 '>
         Select your Polling unit to see results
       </h1>
