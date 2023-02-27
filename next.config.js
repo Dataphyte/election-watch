@@ -6,6 +6,15 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com', 'firebasestorage.googleapis.com'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/results',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = {
