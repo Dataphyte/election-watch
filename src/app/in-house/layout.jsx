@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { superUserStore } from '@/global/superUserSTore';
+import { superUserStore } from '@/global/superUserStore';
 
 const InHouseLayout = ({ children }) => {
   const { superUser } = superUserStore();
