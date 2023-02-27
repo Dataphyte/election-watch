@@ -1,8 +1,56 @@
-import { Fragment } from 'react';
+'use client';
+
+import { storage } from '@/firebase';
+import stateData from '@/assets/state_data.json';
+import { ref, uploadBytes } from 'firebase/storage';
+import { useUploadStore } from '@/global/uploadStore';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Fragment, useRef, useState, useEffect } from 'react';
 
 export default function AddResult({ state, setState }) {
+  const imageRef = useRef();
+  const [SelectedFile, setSelectedFile] = useState(null);
+  const [FormData, setFormData] = useState({ state_name: 'Abuja' });
+  const { pages, setPages } = useUploadStore();
+
+  useEffect(() => {
+    SelectedFile && console.log(SelectedFile);
+  }, [SelectedFile]);
+
+  // -- habdle form value change -->
+  const handleFormInput = (target, payload) => {
+    setFormData({ ...FormData, [target]: payload });
+  };
+
+  useEffect(() => {
+    console.log(FormData);
+  }, [FormData]);
+
+  // -- handlefile upload  -->
+  const handleFileUpload = (e) => {
+    e.preventDefault();
+    if (
+      FormData.state_name &&
+      FormData.state_code &&
+      FormData.lga_name &&
+      FormData.polling_unit_name &&
+      FormData.polling_unit_code
+    ) {
+      const storageRef = ref(
+        storage,
+        `community/${FormData.state_name}-${FormData.state_code}/${FormData.lga_name}-${FormData.lga_code}/${FormData.polling_unit_name}-${FormData.polling_unit_code}`
+      );
+
+      uploadBytes(storageRef, SelectedFile).then((snapshot) => {
+        // todo: uncomment this line for production
+        // setPages(1);
+      });
+    } else {
+      alert('Please complete the form to upload image!!');
+    }
+  };
+
   return (
     <Transition.Root show={state} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={setState}>
@@ -51,7 +99,12 @@ export default function AddResult({ state, setState }) {
                     </div>
                     <div className='relative mt-6 flex-1 px-4 sm:px-6'>
                       {/* Replace with your content */}
-                      <form className='w-full h-auto bg-green-500 py-4 grid grid-cols-4 gap-2'>
+                      <form className='w-full h-auto py-4 grid grid-cols-4 gap-2'>
+                        <p className='text-rose-500 font-sm font-bold col-span-4 mb-4 border px-2 py-1 border-rose-500/40 rounded-md'>
+                          Note: If your image details is the same with INEC data
+                          please do not upload.
+                        </p>
+                        {/* -- state name */}
                         <div className='form-container'>
                           <label
                             htmlFor='last-name'
@@ -60,15 +113,26 @@ export default function AddResult({ state, setState }) {
                             State name
                           </label>
                           <div className='mt-1'>
-                            <input
-                              type='text'
-                              name='state-name'
-                              id='state-name'
-                              className='form-inputs'
-                            />
+                            <select
+                              className='form-inputs cursor-pointer'
+                              onChange={(e) =>
+                                handleFormInput('state_name', e.target.value)
+                              }
+                            >
+                              <option disabled value='none'>
+                                Select state
+                              </option>
+                              {stateData.map((state) => (
+                                <option key={state.name} value={state.name}>
+                                  {state.name}
+                                </option>
+                              ))}
+                            </select>
                           </div>
                         </div>
-                        <div className='sm:col-span-3'>
+
+                        {/* -- state code */}
+                        <div className='form-container'>
                           <label
                             htmlFor='last-name'
                             className='block text-sm font-medium text-gray-700'
@@ -81,9 +145,156 @@ export default function AddResult({ state, setState }) {
                               name='state-name'
                               id='state-name'
                               className='form-inputs'
+                              onChange={(e) =>
+                                handleFormInput('state_code', e.target.value)
+                              }
                             />
                           </div>
                         </div>
+
+                        {/* -- lga name */}
+                        <div className='form-container'>
+                          <label
+                            htmlFor='last-name'
+                            className='block text-sm font-medium text-gray-700'
+                          >
+                            Local Govt Area
+                          </label>
+                          <div className='mt-1'>
+                            <select
+                              className='form-inputs cursor-pointer'
+                              onChange={(e) =>
+                                handleFormInput('lga_name', e.target.value)
+                              }
+                            >
+                              <option disabled value='none'>
+                                Select LGA
+                              </option>
+                              {FormData.state_name &&
+                                stateData
+                                  .filter(
+                                    (state) =>
+                                      state.name === FormData.state_name
+                                  )[0]
+                                  .lgas.map((lga) => (
+                                    <option key={lga} value={lga}>
+                                      {lga}
+                                    </option>
+                                  ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* -- lga code */}
+                        <div className='form-container'>
+                          <label
+                            htmlFor='last-name'
+                            className='block text-sm font-medium text-gray-700'
+                          >
+                            LGA code
+                          </label>
+                          <div className='mt-1'>
+                            <input
+                              type='text'
+                              name='state-name'
+                              id='state-name'
+                              className='form-inputs'
+                              onChange={(e) =>
+                                handleFormInput('lga_code', e.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+
+                        {/* -- polling unit name */}
+                        <div className='form-container'>
+                          <label
+                            htmlFor='polling-unit-name'
+                            className='block text-sm font-medium text-gray-700'
+                          >
+                            Polling Unit Name
+                          </label>
+                          <div className='mt-1'>
+                            <input
+                              type='text'
+                              name='polling-unit-name'
+                              id='polling-unit-name'
+                              className='form-inputs'
+                              onChange={(e) =>
+                                handleFormInput(
+                                  'polling_unit_name',
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+
+                        {/* -- polling unit code */}
+                        <div className='form-container'>
+                          <label
+                            htmlFor='polling-unit-code'
+                            className='block text-sm font-medium text-gray-700'
+                          >
+                            Polling unit code
+                          </label>
+                          <div className='mt-1'>
+                            <input
+                              type='text'
+                              name='polling-unit-code'
+                              id='polling-unit-code'
+                              className='form-inputs'
+                              onChange={(e) =>
+                                handleFormInput(
+                                  'polling_unit_code',
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                        {/* -- separator */}
+                        <div className='w-full col-span-4 h-[2px] bg-gray-200 mt-5' />
+                        {/* -- Add image */}
+                        <div className='col-span-4 mt-5'>
+                          <input
+                            type='file'
+                            className='hidden'
+                            accept='image/*'
+                            ref={imageRef}
+                            onChange={(e) => setSelectedFile(e.target.files[0])}
+                          />
+                          <div
+                            className='py-2 px-3 rounded shadow-md bg-indigo-500 text-gray-50 w-max cursor-pointer'
+                            onClick={() => imageRef.current.click()}
+                          >
+                            <p>Select image</p>
+                          </div>
+                          <p className='text-gray-700 text-sm mt-3'>
+                            &bull;&nbsp;
+                            {SelectedFile !== null
+                              ? `${SelectedFile.name} -->  ${Math.round(
+                                  SelectedFile.size / 1000
+                                )}kb`
+                              : 'No file selected'}
+                          </p>
+                        </div>
+
+                        {/* -- upload to cloud */}
+                        {pages === 0 && (
+                          <button
+                            className='col-span-4 bg-indigo-600 text-white font-medium text-lg py-2 mt-12 rounded shadow-md hover:shadow-lg transition-all duration-300 ease-out'
+                            onClick={handleFileUpload}
+                          >
+                            Upload proof
+                          </button>
+                        )}
+
+                        {pages === 1 && (
+                          <p className='col-span-4 text-teal-500 font-medium mt-12'>
+                            Thank you for your submission
+                          </p>
+                        )}
                       </form>
                       {/* /End replace */}
                     </div>
