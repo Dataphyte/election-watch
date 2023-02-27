@@ -17,7 +17,7 @@ const InHouseLayout = ({ children }) => {
     if (!superUser || superUser === null || !superUser.user) {
       navigator.push('in-house');
     }
-  });
+  }, []);
 
   return <div>{children}</div>;
 };

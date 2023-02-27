@@ -44,7 +44,7 @@ const InHouse = () => {
 
   return (
     <div className='w-full h-screen min-h-[800px] flex items-center justify-center px-4'>
-      <div className='flex w-full max-w-xl flex-col items-center justify center bg-white py-20 px-3 md:px-16 shadow-lg rounded gap-4'>
+      <form className='flex w-full max-w-xl flex-col items-center justify center bg-white py-20 px-3 md:px-16 shadow-lg rounded gap-4'>
         <p className='text-2xl font-bold uppercase text-blue-600'>
           ELECTION WATCH
         </p>
@@ -65,11 +65,11 @@ const InHouse = () => {
 
         <button
           className='py-3 px-3 text-gray-50 w-full mt-3 bg-indigo-500 cursor-pointer rounded shadow'
-          onClick={() => handleLogin()}
+          onClick={handleLogin}
         >
           Login
         </button>
-      </div>
+      </form>
     </div>
   );
 };
