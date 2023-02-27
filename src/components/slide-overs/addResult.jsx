@@ -1,50 +1,34 @@
 'use client';
 
 import { storage } from '@/firebase';
-import stateData from '@/assets/state_data.json';
 import { ref, uploadBytes } from 'firebase/storage';
 import { useUploadStore } from '@/global/uploadStore';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { superUserStore } from '@/global/superUserStore';
 import { Fragment, useRef, useState, useEffect } from 'react';
-import { stringCleaner } from '@/utils/stringCleaner';
+import { extractor } from '@/utils/pu-extractor';
+import PuSelector from '../puSelector';
+import { puStore } from '@/global/puStore';
 
 export default function AddResult({ state, setState, type }) {
   const imageRef = useRef();
   const [SelectedFile, setSelectedFile] = useState(null);
-  const [FormData, setFormData] = useState({});
   const { pages, setPages } = useUploadStore();
   const { superUser } = superUserStore();
-
-  useEffect(() => {
-    SelectedFile && console.log(SelectedFile);
-  }, [SelectedFile]);
+  const { pu } = puStore();
 
   // -- habdle form value change -->
-  const handleFormInput = (target, payload) => {
-    setFormData({ ...FormData, [target]: payload });
-  };
-
-  // useEffect(() => {
-  //   console.log(FormData);
-  // }, [FormData]);
 
   // -- handlefile upload  -->
   const handleFileUpload = (e) => {
     e.preventDefault();
-    if (
-      FormData.state_name &&
-      FormData.state_code &&
-      FormData.lga_name &&
-      FormData.reg_area_name &&
-      FormData.reg_area_code &&
-      FormData.polling_unit_name &&
-      FormData.polling_unit_code
-    ) {
+    const data = extractor(pu);
+
+    if (data.length === 4 && data[3].length === 3) {
       const storageRef = ref(
         storage,
-        `${type}/${FormData.state_name}-${FormData.state_code}/${FormData.lga_name}-${FormData.lga_code}/${FormData.reg_area_name}-${FormData.reg_area_code}---${FormData.polling_unit_name}-${FormData.polling_unit_code}/${SelectedFile.name}`
+        `${type}/state-${data[0]}/lga-${data[1]}/reg-${data[2]}/pu-${data[3]}/${SelectedFile.name}`
       );
 
       uploadBytes(storageRef, SelectedFile).then((snapshot) => {
@@ -54,7 +38,7 @@ export default function AddResult({ state, setState, type }) {
         setState(false);
       });
     } else {
-      alert('Please complete the form to upload image!!');
+      alert('Please check the PU code for errors');
     }
   };
 
@@ -109,197 +93,13 @@ export default function AddResult({ state, setState, type }) {
                       <form className='w-full h-auto py-1 grid grid-cols-4 gap-4'>
                         {/* -- state name */}
                         <div className='form-container'>
-                          <label
-                            htmlFor='last-name'
-                            className='block text-sm font-medium text-gray-700'
-                          >
-                            State name
-                          </label>
-                          <div className='mt-1'>
-                            <select
-                              className='form-inputs cursor-pointer'
-                              onChange={(e) =>
-                                handleFormInput('state_name', e.target.value)
-                              }
-                            >
-                              <option selected disabled value='none'>
-                                Select state
-                              </option>
-                              {stateData.map((state) => (
-                                <option key={state.name} value={state.name}>
-                                  {state.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
+                          <PuSelector />
                         </div>
-
-                        {/* -- state code */}
                         <div className='form-container'>
-                          <label
-                            htmlFor='last-name'
-                            className='block text-sm font-medium text-gray-700'
-                          >
-                            State code
+                          <label>
+                            Enter your phone number if you wish to be contacted
                           </label>
-                          <div className='mt-1'>
-                            <input
-                              type='text'
-                              name='state-name'
-                              id='state-name'
-                              className='form-inputs'
-                              onChange={(e) =>
-                                handleFormInput('state_code', e.target.value)
-                              }
-                            />
-                          </div>
-                        </div>
-
-                        {/* -- lga name */}
-                        <div className='form-container'>
-                          <label
-                            htmlFor='last-name'
-                            className='block text-sm font-medium text-gray-700'
-                          >
-                            Local Govt Area
-                          </label>
-                          <div className='mt-1'>
-                            <select
-                              className='form-inputs cursor-pointer'
-                              onChange={(e) =>
-                                handleFormInput('lga_name', e.target.value)
-                              }
-                            >
-                              <option selected disabled value='none'>
-                                Select LGA
-                              </option>
-                              {FormData.state_name &&
-                                stateData
-                                  .filter(
-                                    (state) =>
-                                      state.name === FormData.state_name
-                                  )[0]
-                                  .lgas.map((lga) => (
-                                    <option key={lga} value={lga}>
-                                      {lga}
-                                    </option>
-                                  ))}
-                            </select>
-                          </div>
-                        </div>
-
-                        {/* -- lga code */}
-                        <div className='form-container'>
-                          <label
-                            htmlFor='last-name'
-                            className='block text-sm font-medium text-gray-700'
-                          >
-                            LGA code
-                          </label>
-                          <div className='mt-1'>
-                            <input
-                              type='text'
-                              name='state-name'
-                              id='state-name'
-                              className='form-inputs'
-                              onChange={(e) =>
-                                handleFormInput('lga_code', e.target.value)
-                              }
-                            />
-                          </div>
-                        </div>
-
-                        {/* -- Registeration area name */}
-                        <div className='form-container'>
-                          <label
-                            htmlFor='reg-area-name'
-                            className='block text-sm font-medium text-gray-700'
-                          >
-                            Registeration area Name
-                          </label>
-                          <div className='mt-1'>
-                            <input
-                              type='text'
-                              name='reg-area-name'
-                              id='reg-area-name'
-                              className='form-inputs'
-                              onChange={(e) =>
-                                handleFormInput(
-                                  'reg_area_name',
-                                  stringCleaner(e.target.value.toUpperCase())
-                                )
-                              }
-                            />
-                          </div>
-                        </div>
-
-                        {/* -- Registeration area code */}
-                        <div className='form-container'>
-                          <label
-                            htmlFor='reg-area-code'
-                            className='block text-sm font-medium text-gray-700'
-                          >
-                            Registeration area code
-                          </label>
-                          <div className='mt-1'>
-                            <input
-                              type='text'
-                              name='reg-area-code'
-                              id='reg-area-code'
-                              className='form-inputs'
-                              onChange={(e) =>
-                                handleFormInput('reg_area_code', e.target.value)
-                              }
-                            />
-                          </div>
-                        </div>
-
-                        {/* -- polling unit name */}
-                        <div className='form-container'>
-                          <label
-                            htmlFor='polling-unit-name'
-                            className='block text-sm font-medium text-gray-700'
-                          >
-                            Polling Unit Name
-                          </label>
-                          <div className='mt-1'>
-                            <input
-                              type='text'
-                              name='polling-unit-name'
-                              id='polling-unit-name'
-                              className='form-inputs'
-                              onChange={(e) =>
-                                handleFormInput(
-                                  'polling_unit_name',
-                                  stringCleaner(e.target.value.toUpperCase())
-                                )
-                              }
-                            />
-                          </div>
-                        </div>
-
-                        {/* -- polling unit code */}
-                        <div className='form-container'>
-                          <label
-                            htmlFor='polling-unit-code'
-                            className='block text-sm font-medium text-gray-700'
-                          >
-                            Polling unit code
-                          </label>
-                          <div className='mt-1'>
-                            <input
-                              type='text'
-                              name='polling-unit-code'
-                              id='polling-unit-code'
-                              className='form-inputs'
-                              onChange={(e) =>
-                                handleFormInput(
-                                  'polling_unit_code',
-                                  e.target.value
-                                )
-                              }
-                            />
-                          </div>
+                          <input type='tel' className='form-inputs' />
                         </div>
 
                         {/* -- separator */}

@@ -20,7 +20,7 @@ body {
   }
 
   .form-container {
-    @apply sm:col-span-3 col-span-4 md:col-span-2;
+    @apply sm:col-span-3 col-span-4 text-sm gap-2 flex flex-col;
   }
 
   .form-inputs {
