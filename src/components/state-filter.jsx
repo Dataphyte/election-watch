@@ -32,12 +32,11 @@ const StateFilter = () => {
 
         {/* -- select lga */}
         <select
-          defaultValue={'Selected a state to see LGA'}
           className='border border-gray-400 py-1 px-3 rounded'
           onChange={(e) => setSelectedLga(e.target.value)}
         >
-          <option selected hidden value='' disabled>
-            Selected a state to see LGA
+          <option selected hidden disabled>
+            Select a state to see LGA
           </option>
           {selectedState &&
             StateData.filter((data) => data.name === selectedState)[0].lgas.map(

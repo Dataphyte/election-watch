@@ -2,8 +2,9 @@ import Nav from '@/components/nav';
 import './globals.css';
 
 export const metadata = {
-  title: 'Dataphyte election watch',
-  description: 'Dataphyte election watch',
+  title: 'Election Result Watch',
+  description: 'Election Result Watch',
+  icons: { icon: [{ url: '/favicon.png' }] },
 };
 
 export default function RootLayout({ children }) {

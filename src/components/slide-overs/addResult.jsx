@@ -12,7 +12,7 @@ import { Fragment, useRef, useState, useEffect } from 'react';
 export default function AddResult({ state, setState, type }) {
   const imageRef = useRef();
   const [SelectedFile, setSelectedFile] = useState(null);
-  const [FormData, setFormData] = useState({ state_name: 'Abuja' });
+  const [FormData, setFormData] = useState({});
   const { pages, setPages } = useUploadStore();
   const { superUser } = superUserStore();
 
@@ -46,7 +46,7 @@ export default function AddResult({ state, setState, type }) {
 
       uploadBytes(storageRef, SelectedFile).then((snapshot) => {
         // TODO: uncomment this line for production
-        type === 'community' && setPages(1);
+        type === 'community' && !superUser && setPages(1);
       });
     } else {
       alert('Please complete the form to upload image!!');

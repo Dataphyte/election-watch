@@ -91,11 +91,11 @@ const Results = () => {
   };
 
   return (
-    <div className='flex flex-col py-5 w-full gap-5 min-h-screen items-center'>
+    <div className='flex flex-col py-5 w-full gap-5 min-h-screen items-center px-3'>
       {/* -- add result slide over */}
       <AddResult state={ShowForm} setState={setShowForm} type='community' />
 
-      <h1 className='text-2xl md:text-3xl font-bold text-blue-500 '>
+      <h1 className='text-2xl md:text-3xl font-bold text-blue-500 text-center'>
         Select your Polling unit to see results
       </h1>
 
@@ -103,7 +103,7 @@ const Results = () => {
       <StateFilter />
 
       {/* -- details section */}
-      <div className='flex flex-col w-full max-w-3xl bg-gray-300 rounded-md shadow-md px-12 py-4 items-center justify-center'>
+      <div className='flex flex-col w-full max-w-3xl bg-gray-300 rounded-md shadow-md px-3 md:px-12 py-4 items-center justify-center'>
         <div className='w-full gap-2 grid grid-cols-4 items-center justify-content-center pb-2'>
           {/* -- state name */}
           <div className='col-span-4 md:col-span-2 flex'>
@@ -183,9 +183,9 @@ const Results = () => {
         </button>
       </div>
 
-      <section className='w-full h-[600px] grid grid-cols-2 max-w-4xl gap-10 justify-center items-center'>
+      <section className='w-full min-h-[600px] grid grid-cols-2 max-w-4xl gap-10 justify-center items-center'>
         {/* -- original IRev*/}
-        <div className='w-full flex flex-col h-full col-span-2 gap-4 md:col-span-1 relative items-center border border-gray-400 py-2'>
+        <div className='w-full flex flex-col h-full min-h-[600px] col-span-2 gap-4 md:col-span-1 relative items-center border border-gray-400 py-2'>
           <p className='text-base font-medium'>INEC IReV</p>
           <div className='relative w-full h-4/5 flex items-center justify-center'>
             {InHouseImage && (
@@ -206,7 +206,7 @@ const Results = () => {
         </div>
 
         {/* -- community upload*/}
-        <div className='w-full flex flex-col h-full col-span-2 gap-4 md:col-span-1 relative items-center border border-gray-400 py-2'>
+        <div className='w-full flex flex-col h-full col-span-2 gap-4 md:col-span-1 relative items-center border border-gray-400 py-2 min-h-[600px] '>
           <p className='text-lg font-medium'>Community Upload</p>
           <div className='relative w-full h-4/5 flex items-center justify-center'>
             {CommunityImage && (
