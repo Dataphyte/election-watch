@@ -37,9 +37,9 @@ const InHouse = () => {
   };
 
   // -- monitor the user -->
-  useEffect(() => {
-    console.log(User);
-  }, [User]);
+  //   useEffect(() => {
+  //     console.log(User);
+  //   }, [User]);
 
   return (
     <div className='w-full h-screen min-h-[800px] flex items-center justify-center px-4'>
