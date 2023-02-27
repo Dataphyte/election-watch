@@ -1,12 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { storage } from '@/firebase';
+import { stateStore } from '@/global/stateStore';
 import React, { useState, useEffect } from 'react';
 import StateFilter from '@/components/state-filter';
+import { stringCleaner } from '@/utils/stringCleaner';
 import AddResult from '@/components/slide-overs/addResult';
-import { stateStore } from '@/global/stateStore';
+import { ref, getDownloadURL, listAll } from 'firebase/storage';
 
 const Results = () => {
   const [InHouseImage, setInHouseImage] = useState(null);
@@ -157,10 +158,7 @@ const Results = () => {
                 onChange={(e) =>
                   handleFilterChange(
                     'reg_area_name',
-                    e.target.value
-                      .toUpperCase()
-                      .replaceAll('/', '-')
-                      .replaceAll(',', '-')
+                    stringCleaner(e.target.value.toUpperCase())
                   )
                 }
               />
@@ -191,10 +189,7 @@ const Results = () => {
                 onChange={(e) =>
                   handleFilterChange(
                     'polling_unit_name',
-                    e.target.value
-                      .toUpperCase()
-                      .replaceAll('/', '-')
-                      .replaceAll(',', '-')
+                    stringCleaner(e.target.value.toUpperCase())
                   )
                 }
               />

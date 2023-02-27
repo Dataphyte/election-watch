@@ -3,8 +3,10 @@
 import React, { useState, useEffet } from 'react';
 import { useUploadStore } from '@/global/uploadStore';
 import AddResult from '@/components/slide-overs/addResult';
+import { useRouter } from 'next/navigation';
 
 const InHouseHome = () => {
+  const navigator = useRouter();
   const [openForm, setOpenForm] = useState(false);
   const { setPages } = useUploadStore();
 
@@ -25,6 +27,15 @@ const InHouseHome = () => {
         }}
       >
         Reset upload button
+      </button>
+
+      <button
+        className='px-4 py-2 text-2xl font-bold text-white bg-indigo-500/90 rounded shadow'
+        onClick={() => {
+          navigator.push('results');
+        }}
+      >
+        View Results
       </button>
     </div>
   );

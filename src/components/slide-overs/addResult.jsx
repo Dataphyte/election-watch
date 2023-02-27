@@ -8,6 +8,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { superUserStore } from '@/global/superUserStore';
 import { Fragment, useRef, useState, useEffect } from 'react';
+import { stringCleaner } from '@/utils/stringCleaner';
 
 export default function AddResult({ state, setState, type }) {
   const imageRef = useRef();
@@ -225,10 +226,7 @@ export default function AddResult({ state, setState, type }) {
                               onChange={(e) =>
                                 handleFormInput(
                                   'reg_area_name',
-                                  e.target.value
-                                    .toUpperCase()
-                                    .replaceAll('/', '-')
-                                    .replaceAll(',', '-')
+                                  stringCleaner(e.target.value.toUpperCase())
                                 )
                               }
                             />
@@ -273,10 +271,7 @@ export default function AddResult({ state, setState, type }) {
                               onChange={(e) =>
                                 handleFormInput(
                                   'polling_unit_name',
-                                  e.target.value
-                                    .toUpperCase()
-                                    .replaceAll('/', '-')
-                                    .replaceAll(',', '-')
+                                  stringCleaner(e.target.value.toUpperCase())
                                 )
                               }
                             />
