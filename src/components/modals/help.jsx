@@ -35,7 +35,7 @@ export default function HelpModal({ state, setState }) {
                     HOW TO USE
                   </h3>
                   <p
-                    className='text-rose-600 text-medium'
+                    className='text-rose-600 text-medium cursor-pointer'
                     onClick={() => setState(false)}
                   >
                     X close
