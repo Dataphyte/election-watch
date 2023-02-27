@@ -6,6 +6,7 @@ import { ref, uploadBytes } from 'firebase/storage';
 import { useUploadStore } from '@/global/uploadStore';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { superUserStore } from '@/global/superUserSTore';
 import { Fragment, useRef, useState, useEffect } from 'react';
 
 export default function AddResult({ state, setState, type }) {
@@ -13,6 +14,7 @@ export default function AddResult({ state, setState, type }) {
   const [SelectedFile, setSelectedFile] = useState(null);
   const [FormData, setFormData] = useState({ state_name: 'Abuja' });
   const { pages, setPages } = useUploadStore();
+  const { superUser } = superUserStore();
 
   useEffect(() => {
     SelectedFile && console.log(SelectedFile);
@@ -277,16 +279,18 @@ export default function AddResult({ state, setState, type }) {
                         </div>
 
                         {/* -- upload to cloud */}
-                        {pages === 0 && (
+                        {pages === 0 || superUser ? (
                           <button
                             className='col-span-4 bg-indigo-600 text-white font-medium text-lg py-2 mt-12 rounded shadow-md hover:shadow-lg transition-all duration-300 ease-out'
                             onClick={handleFileUpload}
                           >
                             Upload proof
                           </button>
+                        ) : (
+                          ''
                         )}
 
-                        {pages === 1 && (
+                        {pages === 1 && !superUser && (
                           <p className='col-span-4 text-teal-500 font-medium mt-12'>
                             Thank you for your submission
                           </p>
