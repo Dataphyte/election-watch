@@ -1,19 +1,37 @@
 'use client';
 
-import React, { useState } from 'react';
 import Image from 'next/image';
+import { ref } from 'firebase/storage';
+import { storage } from '@/firebase';
+import React, { useState, useEffect } from 'react';
 import StateFilter from '@/components/state-filter';
 import AddResult from '@/components/slide-overs/addResult';
+import { stateStore } from '@/global/stateStore';
 
 const Results = () => {
   const [ShowForm, setShowForm] = useState(false);
-  const puData = {
-    state: 'Anambra',
-    state_code: 12345,
-    lga: 'Aguata',
-    lga_code: 12345,
-    polling_unit: 'Motor park',
-    polling_unit_code: 1234553,
+  const { selectedState, selectedLga } = stateStore();
+  const [FilterData, setFilterData] = useState({});
+
+  useEffect(() => {
+    // -- always set the name and lgs -->
+    setFilterData({
+      ...FilterData,
+      state_name: selectedState,
+      lga_name: selectedLga,
+    });
+  }, [selectedLga, selectedState]);
+
+  useEffect(() => {
+    console.log(FilterData);
+  }, [FilterData]);
+
+  // TODO: Fetch image
+  const handleGetImage = () => {};
+
+  // -- handle filter inpout change  -->
+  const handleFilterChange = (target, payload) => {
+    setFilterData({ ...FilterData, [target]: payload });
   };
 
   return (
@@ -27,38 +45,77 @@ const Results = () => {
       <StateFilter />
 
       {/* -- details section */}
-      <div className='flex flex-col w-full max-w-3xl h-32 bg-white rounded-md shadow-md px-12 py-3 items-center justify-center'>
-        <ul className='w-full gap-1 flex flex-col'>
-          <li className='flex justify-between'>
+      <div className='flex flex-col w-full max-w-3xl bg-gray-300 rounded-md shadow-md px-12 py-4 items-center justify-center'>
+        <div className='w-full gap-2 grid grid-cols-4 items-center justify-content-center pb-2'>
+          {/* -- state name */}
+          <div className='col-span-4 md:col-span-2 flex'>
             <p>
-              State: <b>{puData.state}</b>
+              State: <b>{selectedState}</b>
             </p>
-            <p>
-              code:
-              <b> {puData.state_code}</b>
-            </p>
-          </li>
+          </div>
 
-          <li className='flex justify-between'>
+          {/* -- state code */}
+          <div className='col-span-4 md:col-span-2 flex'>
             <p>
-              Local Government Area: <b>{puData.lga}</b>
+              State code:
+              <input
+                type='text'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40'
+                onChange={(e) =>
+                  handleFilterChange('state_code', e.target.value)
+                }
+              />
             </p>
-            <p>
-              code:
-              <b> {puData.lga_code}</b>
-            </p>
-          </li>
+          </div>
 
-          <li className='flex justify-between'>
+          {/* -- lga name */}
+          <div className='col-span-4 md:col-span-2 flex'>
             <p>
-              Polling Unit: <b>{puData.polling_unit}</b>
+              Local Government Area: <b>{selectedLga}</b>
             </p>
+          </div>
+
+          {/* -- lga code */}
+          <div className='col-span-4 md:col-span-2 flex'>
             <p>
-              code:
-              <b> {puData.polling_unit_code}</b>
+              LGA code:
+              <input
+                type='text'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40'
+                onChange={(e) => handleFilterChange('lga_code', e.target.value)}
+              />
             </p>
-          </li>
-        </ul>
+          </div>
+
+          {/* -- polling unit name */}
+
+          <div className='col-span-4 md:col-span-2 flex'>
+            <p>
+              Polling Unit:{' '}
+              <input
+                type='text'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40'
+                onChange={(e) =>
+                  handleFilterChange('polling_unit_name', e.target.value)
+                }
+              />
+            </p>
+          </div>
+
+          {/* -- polling unit code */}
+          <div className='col-span-4 md:col-span-2 flex'>
+            <p>
+              Polling unit code:
+              <input
+                type='text'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40'
+                onChange={(e) =>
+                  handleFilterChange('polling_unit_code', e.target.value)
+                }
+              />
+            </p>
+          </div>
+        </div>
 
         <button className='py-1 px-4 bg-indigo-500 text-gray-50 rounded hover:shadow-md '>
           Search polling unit

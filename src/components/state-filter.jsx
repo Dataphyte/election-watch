@@ -7,7 +7,7 @@ import StateData from '@/assets/state_data.json';
 const StateFilter = () => {
   //  TODO: MAke the select option default show again
 
-  const { selectedState, setSelectedState } = stateStore();
+  const { selectedState, setSelectedState, setSelectedLga } = stateStore();
   return (
     <>
       {/* -- ############################ */}
@@ -32,9 +32,7 @@ const StateFilter = () => {
         <select
           defaultValue={'Selected a state to see LGA'}
           className='border border-gray-400 py-1 px-3 rounded'
-          onChange={(e) =>
-            console.log({ state: selectedState, lga: e.target.value })
-          }
+          onChange={(e) => setSelectedLga(e.target.value)}
         >
           <option hidden value='' disabled>
             Selected a state to see LGA

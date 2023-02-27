@@ -43,7 +43,7 @@ export default function AddResult({ state, setState }) {
       );
 
       uploadBytes(storageRef, SelectedFile).then((snapshot) => {
-        // todo: uncomment this line for production
+        // TODO: uncomment this line for production
         // setPages(1);
       });
     } else {
@@ -99,10 +99,10 @@ export default function AddResult({ state, setState }) {
                     </div>
                     <div className='relative mt-6 flex-1 px-4 sm:px-6'>
                       {/* Replace with your content */}
-                      <form className='w-full h-auto py-4 grid grid-cols-4 gap-2'>
-                        <p className='text-rose-500 font-sm font-bold col-span-4 mb-4 border px-2 py-1 border-rose-500/40 rounded-md'>
-                          Note: If your image details is the same with INEC data
-                          please do not upload.
+                      <form className='w-full h-auto py-1 grid grid-cols-4 gap-2'>
+                        <p className='text-rose-500 font-sm font-bold col-span-4 mb-6 border px-2 py-1 border-rose-500/40 rounded-md'>
+                          Note: If your image details are the same with INEC
+                          data please do not upload.
                         </p>
                         {/* -- state name */}
                         <div className='form-container'>
