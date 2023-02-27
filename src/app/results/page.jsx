@@ -155,7 +155,10 @@ const Results = () => {
                 type='text'
                 className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40 text-sm'
                 onChange={(e) =>
-                  handleFilterChange('reg_area_name', e.target.value)
+                  handleFilterChange(
+                    'reg_area_name',
+                    e.target.value.toUpperCase().replaceAll('/', '-')
+                  )
                 }
               />
             </p>
@@ -183,7 +186,10 @@ const Results = () => {
                 type='text'
                 className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40 text-sm'
                 onChange={(e) =>
-                  handleFilterChange('polling_unit_name', e.target.value)
+                  handleFilterChange(
+                    'polling_unit_name',
+                    e.target.value.toUpperCase().replaceAll('/', '-')
+                  )
                 }
               />
             </p>

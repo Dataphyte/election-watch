@@ -49,6 +49,7 @@ export default function AddResult({ state, setState, type }) {
       uploadBytes(storageRef, SelectedFile).then((snapshot) => {
         // TODO: uncomment this line for production
         type === 'community' && !superUser && setPages(1);
+        setState(false);
       });
     } else {
       alert('Please complete the form to upload image!!');
@@ -223,7 +224,9 @@ export default function AddResult({ state, setState, type }) {
                               onChange={(e) =>
                                 handleFormInput(
                                   'reg_area_name',
-                                  e.target.value.toUpperCase()
+                                  e.target.value
+                                    .toUpperCase()
+                                    .replaceAll('/', '-')
                                 )
                               }
                             />
@@ -268,7 +271,9 @@ export default function AddResult({ state, setState, type }) {
                               onChange={(e) =>
                                 handleFormInput(
                                   'polling_unit_name',
-                                  e.target.value.toUpperCase()
+                                  e.target.value
+                                    .toUpperCase()
+                                    .replaceAll('/', '-')
                                 )
                               }
                             />
