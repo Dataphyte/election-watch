@@ -36,9 +36,9 @@ const Results = () => {
    * @returns Array of images for community and single image for internal
    */
   const handleGetImage = (type) => {
-    const communityImagesPath = `community/${FilterData.state_name}-${FilterData.state_code}/${FilterData.lga_name}-${FilterData.lga_code}/${FilterData.polling_unit_name}-${FilterData.polling_unit_code}`;
+    const communityImagesPath = `community/${FilterData.state_name}-${FilterData.state_code}/${FilterData.lga_name}-${FilterData.lga_code}/${FilterData.reg_area_name}-${FilterData.reg_area_code}---${FilterData.polling_unit_name}-${FilterData.polling_unit_code}`;
 
-    const inHouseImagesPath = `internal/${FilterData.state_name}-${FilterData.state_code}/${FilterData.lga_name}-${FilterData.lga_code}/${FilterData.polling_unit_name}-${FilterData.polling_unit_code}`;
+    const inHouseImagesPath = `internal/${FilterData.state_name}-${FilterData.state_code}/${FilterData.lga_name}-${FilterData.lga_code}/${FilterData.reg_area_name}-${FilterData.reg_area_code}---${FilterData.polling_unit_name}-${FilterData.polling_unit_code}`;
 
     // -- create refs  -->
     const internalRef = ref(storage, inHouseImagesPath);
@@ -49,6 +49,8 @@ const Results = () => {
       FilterData.state_name &&
       FilterData.state_code &&
       FilterData.lga_name &&
+      FilterData.reg_area_name &&
+      FilterData.reg_area_code &&
       FilterData.polling_unit_name &&
       FilterData.polling_unit_code
     ) {
@@ -103,7 +105,7 @@ const Results = () => {
       <StateFilter />
 
       {/* -- details section */}
-      <div className='flex flex-col w-full max-w-3xl bg-gray-300 rounded-md shadow-md px-3 md:px-12 py-4 items-center justify-center'>
+      <div className='flex flex-col w-full max-w-3xl bg-gray-300 rounded-md shadow-md px-3 md:px-12 py-4 items-center justify-center text-sm'>
         <div className='w-full gap-2 grid grid-cols-4 items-center justify-content-center pb-2'>
           {/* -- state name */}
           <div className='col-span-4 md:col-span-2 flex'>
@@ -145,8 +147,35 @@ const Results = () => {
             </p>
           </div>
 
-          {/* -- polling unit name */}
+          {/* -- Reg Area name */}
+          <div className='col-span-4 md:col-span-2 flex'>
+            <p>
+              Reg Area:{' '}
+              <input
+                type='text'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40 text-sm'
+                onChange={(e) =>
+                  handleFilterChange('reg_area_name', e.target.value)
+                }
+              />
+            </p>
+          </div>
 
+          {/* -- Reg Area code */}
+          <div className='col-span-4 md:col-span-2 flex'>
+            <p>
+              Reg Area code:
+              <input
+                type='text'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40 text-sm'
+                onChange={(e) =>
+                  handleFilterChange('reg_area_code', e.target.value)
+                }
+              />
+            </p>
+          </div>
+
+          {/* -- polling unit name */}
           <div className='col-span-4 md:col-span-2 flex'>
             <p>
               Polling Unit:{' '}

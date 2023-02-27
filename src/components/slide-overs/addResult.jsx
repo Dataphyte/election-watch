@@ -36,12 +36,14 @@ export default function AddResult({ state, setState, type }) {
       FormData.state_name &&
       FormData.state_code &&
       FormData.lga_name &&
+      FormData.reg_area_name &&
+      FormData.reg_area_code &&
       FormData.polling_unit_name &&
       FormData.polling_unit_code
     ) {
       const storageRef = ref(
         storage,
-        `${type}/${FormData.state_name}-${FormData.state_code}/${FormData.lga_name}-${FormData.lga_code}/${FormData.polling_unit_name}-${FormData.polling_unit_code}/${SelectedFile.name}`
+        `${type}/${FormData.state_name}-${FormData.state_code}/${FormData.lga_name}-${FormData.lga_code}/${FormData.reg_area_name}-${FormData.reg_area_code}---${FormData.polling_unit_name}-${FormData.polling_unit_code}/${SelectedFile.name}`
       );
 
       uploadBytes(storageRef, SelectedFile).then((snapshot) => {
@@ -101,7 +103,7 @@ export default function AddResult({ state, setState, type }) {
                     </div>
                     <div className='relative mt-6 flex-1 px-4 sm:px-6'>
                       {/* Replace with your content */}
-                      <form className='w-full h-auto py-1 grid grid-cols-4 gap-2'>
+                      <form className='w-full h-auto py-1 grid grid-cols-4 gap-4'>
                         {/* -- state name */}
                         <div className='form-container'>
                           <label
@@ -204,6 +206,51 @@ export default function AddResult({ state, setState, type }) {
                           </div>
                         </div>
 
+                        {/* -- Registeration area name */}
+                        <div className='form-container'>
+                          <label
+                            htmlFor='reg-area-name'
+                            className='block text-sm font-medium text-gray-700'
+                          >
+                            Registeration area Name
+                          </label>
+                          <div className='mt-1'>
+                            <input
+                              type='text'
+                              name='reg-area-name'
+                              id='reg-area-name'
+                              className='form-inputs'
+                              onChange={(e) =>
+                                handleFormInput(
+                                  'reg_area_name',
+                                  e.target.value.toUpperCase()
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+
+                        {/* -- Registeration area code */}
+                        <div className='form-container'>
+                          <label
+                            htmlFor='reg-area-code'
+                            className='block text-sm font-medium text-gray-700'
+                          >
+                            Registeration area code
+                          </label>
+                          <div className='mt-1'>
+                            <input
+                              type='text'
+                              name='reg-area-code'
+                              id='reg-area-code'
+                              className='form-inputs'
+                              onChange={(e) =>
+                                handleFormInput('reg_area_code', e.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+
                         {/* -- polling unit name */}
                         <div className='form-container'>
                           <label
@@ -221,7 +268,7 @@ export default function AddResult({ state, setState, type }) {
                               onChange={(e) =>
                                 handleFormInput(
                                   'polling_unit_name',
-                                  e.target.value
+                                  e.target.value.toUpperCase()
                                 )
                               }
                             />
@@ -251,6 +298,7 @@ export default function AddResult({ state, setState, type }) {
                             />
                           </div>
                         </div>
+
                         {/* -- separator */}
                         <div className='w-full col-span-4 h-[2px] bg-gray-200 mt-5' />
                         {/* -- Add image */}
