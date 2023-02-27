@@ -39,7 +39,7 @@ export default function AddResult({ state, setState }) {
     ) {
       const storageRef = ref(
         storage,
-        `community/${FormData.state_name}-${FormData.state_code}/${FormData.lga_name}-${FormData.lga_code}/${FormData.polling_unit_name}-${FormData.polling_unit_code}`
+        `community/${FormData.state_name}-${FormData.state_code}/${FormData.lga_name}-${FormData.lga_code}/${FormData.polling_unit_name}-${FormData.polling_unit_code}/${SelectedFile.name}`
       );
 
       uploadBytes(storageRef, SelectedFile).then((snapshot) => {

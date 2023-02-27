@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ref } from 'firebase/storage';
+import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { storage } from '@/firebase';
 import React, { useState, useEffect } from 'react';
 import StateFilter from '@/components/state-filter';
@@ -9,6 +9,8 @@ import AddResult from '@/components/slide-overs/addResult';
 import { stateStore } from '@/global/stateStore';
 
 const Results = () => {
+  const [InHouseImage, setInHouseImage] = useState(null);
+  const [CommunityImage, setCommunityImage] = useState(null);
   const [ShowForm, setShowForm] = useState(false);
   const { selectedState, selectedLga } = stateStore();
   const [FilterData, setFilterData] = useState({});
@@ -23,11 +25,45 @@ const Results = () => {
   }, [selectedLga, selectedState]);
 
   useEffect(() => {
-    console.log(FilterData);
-  }, [FilterData]);
+    console.log(InHouseImage);
+    console.log(CommunityImage);
+  }, [InHouseImage, CommunityImage]);
 
   // TODO: Fetch image
-  const handleGetImage = () => {};
+  /**
+   *
+   * @param {('internal' | 'community')} type - type of image to be cetched
+   * @returns Array of images for community and single image for internal
+   */
+  const handleGetImage = (type) => {
+    const communityImagesPath = `community/${FilterData.state_name}-${FilterData.state_code}/${FilterData.lga_name}-${FilterData.lga_code}/${FilterData.polling_unit_name}-${FilterData.polling_unit_code}`;
+
+    const inHouseImagesPath = `internal/${FilterData.state_name}-${FilterData.state_code}/${FilterData.lga_name}-${FilterData.lga_code}/${FilterData.polling_unit_name}-${FilterData.polling_unit_code}`;
+
+    // -- create refs  -->
+    const internalRef = ref(storage, inHouseImagesPath);
+    const communityRef = ref(storage, communityImagesPath);
+
+    // -- get both images -->
+    if (
+      FilterData.state_name &&
+      FilterData.state_code &&
+      FilterData.lga_name &&
+      FilterData.polling_unit_name &&
+      FilterData.polling_unit_code
+    ) {
+      listAll(communityRef).then((listData) => {
+        console.log(listData);
+        getDownloadURL(ref(storage, listData.items[0].fullPath)).then((url) =>
+          setCommunityImage(url)
+        );
+      });
+
+      // getDownloadURL(internalRef).then((url) => setInHouseImage(url));
+    } else {
+      alert('Please fill the fields correctly to See reults!!');
+    }
+  };
 
   // -- handle filter inpout change  -->
   const handleFilterChange = (target, payload) => {
@@ -60,7 +96,7 @@ const Results = () => {
               State code:
               <input
                 type='text'
-                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40 text-sm'
                 onChange={(e) =>
                   handleFilterChange('state_code', e.target.value)
                 }
@@ -81,7 +117,7 @@ const Results = () => {
               LGA code:
               <input
                 type='text'
-                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40 text-sm'
                 onChange={(e) => handleFilterChange('lga_code', e.target.value)}
               />
             </p>
@@ -94,7 +130,7 @@ const Results = () => {
               Polling Unit:{' '}
               <input
                 type='text'
-                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40 text-sm'
                 onChange={(e) =>
                   handleFilterChange('polling_unit_name', e.target.value)
                 }
@@ -108,7 +144,7 @@ const Results = () => {
               Polling unit code:
               <input
                 type='text'
-                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40'
+                className='bg-gray-white ml-2 px-2 py-1 rounded shadow outline-0 focus:border border-indigo-500/40 text-sm'
                 onChange={(e) =>
                   handleFilterChange('polling_unit_code', e.target.value)
                 }
@@ -117,7 +153,10 @@ const Results = () => {
           </div>
         </div>
 
-        <button className='py-1 px-4 bg-indigo-500 text-gray-50 rounded hover:shadow-md '>
+        <button
+          className='py-1 px-4 bg-indigo-500 text-gray-50 rounded hover:shadow-md border-none '
+          onClick={handleGetImage}
+        >
           Search polling unit
         </button>
       </div>
@@ -126,33 +165,43 @@ const Results = () => {
         {/* -- original IRev*/}
         <div className='w-full flex flex-col h-full col-span-2 gap-4 md:col-span-1 relative items-center border border-gray-400 py-2'>
           <p className='text-base font-medium'>INEC IReV</p>
-          <div className='relative w-full h-4/5 cursor-pointer'>
-            <Image
-              src='https://images.unsplash.com/photo-1599498448014-81d90414c50a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'
-              alt='Irev upload'
-              style={{ objectFit: 'contain', objectPosition: 'center' }}
-              fill
-            />
+          <div className='relative w-full h-4/5 flex items-center justify-center'>
+            {InHouseImage && (
+              <Image
+                src={InHouseImage}
+                alt='INEC upload'
+                style={{ objectFit: 'contain', objectPosition: 'center' }}
+                fill
+              />
+            )}
+            {!InHouseImage && <p>No in-House uploads</p>}
           </div>
-          <button className='py-1 px-3 text-gray-50 font-medium text-base bg-indigo-500 hover:shadow-md rounded transition-all duration-300 ease-out'>
-            View image
-          </button>
+          {InHouseImage && (
+            <button className='py-1 px-3 text-gray-50 font-medium text-base bg-indigo-500 hover:shadow-md rounded transition-all duration-300 ease-out'>
+              View image
+            </button>
+          )}
         </div>
 
         {/* -- community upload*/}
         <div className='w-full flex flex-col h-full col-span-2 gap-4 md:col-span-1 relative items-center border border-gray-400 py-2'>
           <p className='text-lg font-medium'>Community Upload</p>
-          <div className='relative w-full h-4/5 cursor-pointer'>
-            <Image
-              src='https://images.unsplash.com/photo-1599498448014-81d90414c50a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'
-              alt='Irev upload'
-              style={{ objectFit: 'contain', objectPosition: 'center' }}
-              fill
-            />
+          <div className='relative w-full h-4/5 flex items-center justify-center'>
+            {CommunityImage && (
+              <Image
+                src={CommunityImage}
+                alt='Community upload'
+                style={{ objectFit: 'contain', objectPosition: 'center' }}
+                fill
+              />
+            )}
+            {!CommunityImage && <p>No Community uploads</p>}
           </div>
-          <button className='py-1 px-3 text-gray-50 font-medium text-base bg-indigo-500 hover:shadow-md rounded transition-all duration-300 ease-out'>
-            View image
-          </button>
+          {CommunityImage && (
+            <button className='py-1 px-3 text-gray-50 font-medium text-base bg-indigo-500 hover:shadow-md rounded transition-all duration-300 ease-out'>
+              View image
+            </button>
+          )}
         </div>
       </section>
 
