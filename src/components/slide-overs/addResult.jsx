@@ -48,6 +48,7 @@ export default function AddResult({ state, setState, type }) {
 
       uploadBytes(storageRef, SelectedFile).then((snapshot) => {
         // TODO: uncomment this line for production
+        alert('Upload success!');
         type === 'community' && !superUser && setPages(1);
         setState(false);
       });
@@ -227,6 +228,7 @@ export default function AddResult({ state, setState, type }) {
                                   e.target.value
                                     .toUpperCase()
                                     .replaceAll('/', '-')
+                                    .replaceAll(',', '-')
                                 )
                               }
                             />
@@ -274,6 +276,7 @@ export default function AddResult({ state, setState, type }) {
                                   e.target.value
                                     .toUpperCase()
                                     .replaceAll('/', '-')
+                                    .replaceAll(',', '-')
                                 )
                               }
                             />

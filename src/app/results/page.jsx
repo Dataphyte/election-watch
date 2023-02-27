@@ -157,7 +157,10 @@ const Results = () => {
                 onChange={(e) =>
                   handleFilterChange(
                     'reg_area_name',
-                    e.target.value.toUpperCase().replaceAll('/', '-')
+                    e.target.value
+                      .toUpperCase()
+                      .replaceAll('/', '-')
+                      .replaceAll(',', '-')
                   )
                 }
               />
@@ -188,7 +191,10 @@ const Results = () => {
                 onChange={(e) =>
                   handleFilterChange(
                     'polling_unit_name',
-                    e.target.value.toUpperCase().replaceAll('/', '-')
+                    e.target.value
+                      .toUpperCase()
+                      .replaceAll('/', '-')
+                      .replaceAll(',', '-')
                   )
                 }
               />
