@@ -17,10 +17,12 @@ const StateFilter = () => {
         <p>Filter your results</p>
         {/* -- select state */}
         <select
-          defaultValue={'Select by State'}
           onChange={(e) => setSelectedState(e.target.value)}
           className='border border-gray-400 py-1 px-3 rounded'
         >
+          <option selected hidden disabled>
+            Select by State
+          </option>
           {StateData.map((data, idx) => (
             <option key={idx} value={data.name}>
               {data.name}
@@ -34,7 +36,7 @@ const StateFilter = () => {
           className='border border-gray-400 py-1 px-3 rounded'
           onChange={(e) => setSelectedLga(e.target.value)}
         >
-          <option hidden value='' disabled>
+          <option selected hidden value='' disabled>
             Selected a state to see LGA
           </option>
           {selectedState &&

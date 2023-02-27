@@ -52,16 +52,34 @@ const Results = () => {
       FilterData.polling_unit_name &&
       FilterData.polling_unit_code
     ) {
-      listAll(communityRef).then((listData) => {
-        console.log(listData);
-        getDownloadURL(ref(storage, listData.items[0].fullPath))
-          .then((url) => setCommunityImage(url))
-          .catch((error) => console.log(error));
-      });
+      listAll(communityRef)
+        .then((listData) => {
+          console.log(listData);
+          getDownloadURL(ref(storage, listData.items[0].fullPath))
+            .then((url) => setCommunityImage(url))
+            .catch((error) => {
+              console.log(error);
+              setCommunityImage(null);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          setCommunityImage(null);
+        });
 
-      getDownloadURL(internalRef)
-        .then((url) => setInHouseImage(url))
-        .catch((error) => console.log(error));
+      listAll(internalRef)
+        .then((listData) =>
+          getDownloadURL(ref(storage, listData.items[0].fullPath))
+            .then((url) => setInHouseImage(url))
+            .catch((error) => {
+              console.log(error);
+              setInHouseImage(null);
+            })
+        )
+        .catch((error) => {
+          console.log(error);
+          setInHouseImage(null);
+        });
     } else {
       alert('Please fill the fields correctly to See reults!!');
     }

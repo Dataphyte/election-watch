@@ -44,7 +44,7 @@ export default function AddResult({ state, setState, type }) {
 
       uploadBytes(storageRef, SelectedFile).then((snapshot) => {
         // TODO: uncomment this line for production
-        // setPages(1);
+        type === 'community' && setPages(1);
       });
     } else {
       alert('Please complete the form to upload image!!');
@@ -100,12 +100,6 @@ export default function AddResult({ state, setState, type }) {
                     <div className='relative mt-6 flex-1 px-4 sm:px-6'>
                       {/* Replace with your content */}
                       <form className='w-full h-auto py-1 grid grid-cols-4 gap-2'>
-                        {type === 'community' && (
-                          <p className='text-rose-500 font-sm font-bold col-span-4 mb-6 border px-2 py-1 border-rose-500/40 rounded-md'>
-                            Note: If your image details are the same with INEC
-                            data please do not upload.
-                          </p>
-                        )}
                         {/* -- state name */}
                         <div className='form-container'>
                           <label
@@ -121,7 +115,7 @@ export default function AddResult({ state, setState, type }) {
                                 handleFormInput('state_name', e.target.value)
                               }
                             >
-                              <option disabled value='none'>
+                              <option selected disabled value='none'>
                                 Select state
                               </option>
                               {stateData.map((state) => (
@@ -169,7 +163,7 @@ export default function AddResult({ state, setState, type }) {
                                 handleFormInput('lga_name', e.target.value)
                               }
                             >
-                              <option disabled value='none'>
+                              <option selected disabled value='none'>
                                 Select LGA
                               </option>
                               {FormData.state_name &&
