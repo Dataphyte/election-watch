@@ -1,6 +1,6 @@
 'use client';
 
-import { storage } from '@/firebase';
+import { db, storage } from '@/firebase';
 import { ref, uploadBytes } from 'firebase/storage';
 import { useUploadStore } from '@/global/uploadStore';
 import { Dialog, Transition } from '@headlessui/react';
@@ -10,21 +10,24 @@ import { Fragment, useRef, useState, useEffect } from 'react';
 import { extractor } from '@/utils/pu-extractor';
 import PuSelector from '../puSelector';
 import { puStore } from '@/global/puStore';
+import { ref as dbRef, set } from 'firebase/database';
+import classes from '@/utils/classnames';
 
 export default function AddResult({ state, setState, type }) {
   const imageRef = useRef();
   const [SelectedFile, setSelectedFile] = useState(null);
+  const [Phone, setPhone] = useState({});
+  const [SendPhone, setSendPhone] = useState(false);
   const { pages, setPages } = useUploadStore();
   const { superUser } = superUserStore();
   const { pu } = puStore();
-
-  // -- habdle form value change -->
 
   // -- handlefile upload  -->
   const handleFileUpload = (e) => {
     e.preventDefault();
     const data = extractor(pu);
 
+    // -- upload image -->
     if (data.length === 4 && data[3].length === 3) {
       const storageRef = ref(
         storage,
@@ -35,7 +38,25 @@ export default function AddResult({ state, setState, type }) {
         // TODO: uncomment this line for production
         alert('Upload success!');
         type === 'community' && !superUser && setPages(1);
-        setState(false);
+
+        // -- add number -->
+        if (SendPhone) {
+          (async () => {
+            try {
+              setPhone({
+                ...Phone,
+                pollingUnit: pu,
+                file: SelectedFile.name,
+                datePosted: new Date().toLocaleString(),
+              });
+              set(dbRef(db, `phone-numbers/${pu}/${Phone.phone}`), Phone).then(
+                () => setState(false)
+              );
+            } catch (error) {
+              console.log(error);
+            }
+          })();
+        }
       });
     } else {
       alert('Please check the PU code for errors');
@@ -95,12 +116,38 @@ export default function AddResult({ state, setState, type }) {
                         <div className='form-container'>
                           <PuSelector />
                         </div>
-                        <div className='form-container'>
-                          <label>
-                            Enter your phone number if you wish to be contacted
-                          </label>
-                          <input type='tel' className='form-inputs' />
-                        </div>
+
+                        {/* -- phone number */}
+                        {type === 'community' && (
+                          <div className='form-container'>
+                            <label>
+                              Enter your phone number if you wish to be
+                              contacted
+                            </label>
+                            <input
+                              type='tel'
+                              className='form-inputs'
+                              onChange={(e) =>
+                                setPhone({
+                                  ...Phone,
+                                  phone: e.target.value,
+                                })
+                              }
+                            />
+                            <div className='flex gap-3 items-center mt-1'>
+                              <p
+                                className={classes(
+                                  'text-gray-50 cursor-pointer w-max py-2 shadow px-3 font-medium',
+                                  SendPhone ? 'bg-teal-600' : 'bg-rose-500'
+                                )}
+                                onClick={() => setSendPhone((state) => !state)}
+                              >
+                                {SendPhone ? 'I agree' : 'I disagree'}
+                              </p>
+                              <p>click to choose</p>
+                            </div>
+                          </div>
+                        )}
 
                         {/* -- separator */}
                         <div className='w-full col-span-4 h-[2px] bg-gray-200 mt-5' />
